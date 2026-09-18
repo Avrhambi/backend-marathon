@@ -1,2 +1,0 @@
-description: interactive cheat sheet mini Gemini app
-link: https://share.gemini.google/U7DVAOMONQL0
