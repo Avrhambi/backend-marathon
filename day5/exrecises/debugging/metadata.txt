@@ -1,0 +1,2 @@
+description: Gemini mini app of the assignment tasks, number of tasks can be extended automatically
+link: https://share.gemini.google/pX4N1c14SgS3

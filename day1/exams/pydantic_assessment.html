@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 Add-on: Pydantic Self-Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #0f172a; /* Slate 900 */
+        }
+        
+        .q-card {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .code-block {
+            background-color: #1e293b; /* Slate 800 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .code-keyword { color: #c678dd; } /* Purple */
+        .code-function { color: #61afef; } /* Blue */
+        .code-string { color: #98c379; } /* Green */
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8 lg:p-12">
+
+    <header class="max-w-4xl mx-auto mb-10 text-center">
+        <h1 class="text-4xl font-bold text-slate-800 mb-3 tracking-tight">Pydantic Theoretical Assessment</h1>
+        <p class="text-lg text-slate-600">
+            Test your understanding of Type Coercion, Data Validation, and Nested Schemas with Pydantic V2.
+            Select your answers and click <strong>Submit Quiz</strong>.
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-6" id="quizForm">
+
+        <!-- Question 1 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                <h2 class="text-xl font-semibold">Pydantic vs. DataClasses</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                What is the primary difference between standard Python <code>@dataclass</code> and Pydantic's <code>BaseModel</code> when handling raw input data?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Pydantic guarantees compile-time type safety via static analysis before the code runs.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Pydantic is strictly a serialization library, converting objects to JSON without verifying their contents.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Pydantic performs runtime data validation and parsing (coercion), whereas <code>@dataclass</code> only stores data without strictly enforcing types.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: C.</strong> The core philosophy of Pydantic is "parsing, not just validating". While a standard dataclass will happily accept a string when an integer was specified, Pydantic will actively try to convert (coerce) it at runtime, and throw a <code>ValidationError</code> if it fails.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 2 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
+                <h2 class="text-xl font-semibold">Type Coercion</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                If you define a Pydantic field as <code>age: int</code> and instantiate the model with <code>age="25"</code> (a string), what does Pydantic do by default?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It automatically coerces (parses) the string <code>"25"</code> into the integer <code>25</code>.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It raises an immediate <code>ValidationError</code> because the input type does not match the annotation exactly.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It leaves the value as a string but logs a warning to the console.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> Pydantic is designed to parse untyped data (like HTTP request payloads or environment variables) into typed Python objects. Since `"25"` can safely be cast to an integer, Pydantic performs this coercion automatically.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 3 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
+                <h2 class="text-xl font-semibold">Declarative Field Constraints</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                How do you cleanly enforce that an integer field (e.g., <code>price</code>) is always strictly greater than zero using Pydantic V2?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>price: int(min=1)</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>price: int = Field(gt=0)</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>price: int = Field(min_value=1)</code></span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> The <code>Field</code> function in Pydantic is used to apply metadata and declarative constraints to fields. <code>gt</code> stands for "greater than", <code>ge</code> for "greater than or equal to", etc.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 4 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">4</div>
+                <h2 class="text-xl font-semibold">Custom Validators</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                When writing a custom <code>@field_validator</code> in Pydantic V2, what should the method do to signal that validation has failed?
+            </p>
+            <div class="code-block text-sm mb-4">
+@field_validator(<span class="code-string">"email"</span>)
+@classmethod
+<span class="code-keyword">def</span> <span class="code-function">check_domain</span>(cls, value: str):
+    <span class="code-keyword">if</span> <span class="code-string">"@"</span> <span class="code-keyword">not in</span> value:
+        <span class="code-comment"># What goes here?</span>
+            </div>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Return <code>False</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Raise a <code>ValueError</code> or <code>AssertionError</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Call <code>self.invalidate()</code></span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Validators should raise a standard Python exception like <code>ValueError</code> or <code>AssertionError</code>. Pydantic catches these internally and aggregates them into a structured <code>ValidationError</code> indicating which fields failed and why.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 5 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">5</div>
+                <h2 class="text-xl font-semibold">Serialization</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                What is the recommended method in Pydantic V2 to convert a populated <code>BaseModel</code> instance back into a standard Python dictionary?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>model.to_dict()</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>dict(model)</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>model.model_dump()</code></span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: C.</strong> In Pydantic V2, <code>model.model_dump()</code> is the standard way to serialize models to a dictionary (replacing the deprecated `.dict()` from V1). To get a JSON string directly, you use <code>model.model_dump_json()</code>.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 6 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">6</div>
+                <h2 class="text-xl font-semibold">Direct JSON Parsing</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Pydantic V2 uses a high-performance Rust backend. What is the most efficient way to parse a raw JSON string directly into a model instance without calling <code>json.loads()</code> first?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>Model(**json.loads(json_string))</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>Model.model_validate_json(json_string)</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>Model.parse_raw(json_string)</code></span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> <code>model_validate_json()</code> relies directly on Pydantic's Rust-based core engine, making it drastically faster than parsing the JSON in Python first and passing the resulting dict to the model. (Note: <code>parse_raw</code> is deprecated in V2).
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 7 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">7</div>
+                <h2 class="text-xl font-semibold">Cross-Field Validation</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                If you need to validate that <code>password</code> and <code>password_confirm</code> match, which decorator is designed for validating multiple fields against each other?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q7" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>@field_validator('password', 'password_confirm')</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q7" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>@model_validator(mode='after')</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q7" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700"><code>@cross_validator</code></span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> A <code>@model_validator(mode='after')</code> runs after all individual fields have been validated. It receives the entire model instance (or dictionary, depending on the mode), allowing you to safely compare multiple fields like passwords.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 8 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">8</div>
+                <h2 class="text-xl font-semibold">Handling Field Aliases</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Your frontend sends JSON with camelCase keys (e.g., <code>firstName</code>), but your Python backend uses snake_case (<code>first_name</code>). What is the cleanest way to handle this mapping in Pydantic?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q8" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Write a custom <code>__init__</code> method to manually rename the keys before calling <code>super().__init__()</code>.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q8" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Use <code>Field(alias="firstName")</code> on the attribute, or configure an <code>alias_generator</code> in the model's <code>ConfigDict</code>.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q8" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Pydantic automatically ignores case and underscores, so no action is required.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Aliasing is built deeply into Pydantic. You can specify a manual <code>alias</code> in the <code>Field</code> definition, or use a global <code>alias_generator</code> (like <code>pydantic.alias_generators.to_camel</code>) inside <code>model_config = ConfigDict(...)</code> to handle the entire model automatically.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 9 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">9</div>
+                <h2 class="text-xl font-semibold">Forbidding Extra Attributes</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                By default, if a client includes extra JSON fields that are not defined in your Pydantic model, Pydantic simply ignores them. How do you configure the model to raise a <code>ValidationError</code> instead?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q9" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Add <code>model_config = ConfigDict(extra='forbid')</code> to the model class.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q9" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Inherit from <code>pydantic.StrictModel</code> instead of <code>BaseModel</code>.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q9" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Use <code>@model_validator</code> to manually check <code>kwargs.keys()</code> against the model's defined fields.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> The <code>ConfigDict</code> is the standard way to alter model behavior in V2. Setting <code>extra='forbid'</code> prevents clients from passing undocumented/junk payload data. (The default behavior is <code>extra='ignore'</code>).
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 10 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">10</div>
+                <h2 class="text-xl font-semibold">Under the Hood: Performance</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Pydantic V2 is highly celebrated for being significantly faster than Pydantic V1 (often 5x to 50x faster). What is the architectural reason for this massive performance leap?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q10" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It now utilizes Python's <code>asyncio</code> to validate all fields in a model simultaneously on multiple threads.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q10" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">The core validation logic (<code>pydantic-core</code>) was entirely rewritten in Rust, moving the heavy lifting out of Python.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q10" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It drops support for automatic type coercion, saving CPU cycles by failing immediately on type mismatches.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Pydantic V2 separated its validation engine into a separate package called <code>pydantic-core</code>, written in Rust. This allows it to perform schema generation, parsing, and strict validation at near native-C speeds while maintaining a Pythonic API surface.
+                </p>
+            </div>
+        </section>
+
+
+        <div class="text-center pt-8 pb-16">
+            <button id="submitBtn" onclick="submitQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-lg font-semibold py-4 px-10 rounded-xl transition-all shadow-md hover:shadow-lg w-full md:w-auto">
+                Submit Quiz & View Results
+            </button>
+            <div id="resultBanner" class="hidden mt-8 text-2xl md:text-3xl font-bold p-6 rounded-xl border-2 bg-white shadow-sm">
+                <!-- Score injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function submitQuiz() {
+            // Correct answer mappings
+            const answers = {
+                q1: 'c',
+                q2: 'a',
+                q3: 'b',
+                q4: 'b',
+                q5: 'c',
+                q6: 'b',
+                q7: 'b',
+                q8: 'b',
+                q9: 'a',
+                q10: 'b'
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+
+            for (const [q, correctAns] of Object.entries(answers)) {
+                const options = document.getElementsByName(q);
+                
+                options.forEach(opt => {
+                    const label = opt.closest('label');
+                    
+                    // Reset custom styling classes in case of re-runs
+                    label.classList.remove('bg-emerald-50', 'border-emerald-500', 'bg-red-50', 'border-red-500', 'ring-1', 'ring-emerald-500', 'ring-red-500');
+                    
+                    if (opt.checked) {
+                        // User selected this option
+                        if (opt.value === correctAns) {
+                            score++;
+                            label.classList.add('bg-emerald-50', 'border-emerald-500', 'ring-1', 'ring-emerald-500');
+                        } else {
+                            label.classList.add('bg-red-50', 'border-red-500', 'ring-1', 'ring-red-500');
+                        }
+                    }
+                    
+                    // Always highlight the correct answer so they can learn
+                    if (opt.value === correctAns && !opt.checked) {
+                         label.classList.add('border-emerald-400', 'bg-emerald-50');
+                    }
+                    
+                    // Lock inputs after submission
+                    opt.disabled = true;
+                    label.classList.remove('cursor-pointer', 'hover:bg-slate-50');
+                    label.classList.add('cursor-default');
+                });
+
+                // Show the explanation block for this question
+                const explanation = document.querySelector(`input[name="${q}"]`).closest('.q-card').querySelector('.explanation');
+                explanation.classList.remove('hidden');
+            }
+
+            // Display Score Banner
+            const banner = document.getElementById('resultBanner');
+            banner.innerHTML = `You scored <span class="${score === total ? 'text-emerald-600' : 'text-indigo-600'}">${score}</span> out of ${total}!`;
+            banner.classList.remove('hidden');
+            
+            if (score === total) {
+                 banner.classList.add('border-emerald-500', 'text-slate-800');
+            } else {
+                 banner.classList.add('border-indigo-500', 'text-slate-800');
+            }
+            
+            // Hide submit button and smoothly scroll down
+            document.getElementById('submitBtn').style.display = 'none';
+            setTimeout(() => banner.scrollIntoView({ behavior: 'smooth', block: 'end' }), 100);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArjanCodes: Clean Code & Architecture Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #0f172a; /* Slate 900 */
+        }
+        
+        .q-card {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .code-block {
+            background-color: #1e293b; /* Slate 800 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .code-keyword { color: #c678dd; } /* Purple */
+        .code-function { color: #61afef; } /* Blue */
+        .code-string { color: #98c379; } /* Green */
+        .code-comment { color: #64748b; } /* Slate 500 */
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8 lg:p-12">
+
+    <header class="max-w-4xl mx-auto mb-10 text-center">
+        <h1 class="text-4xl font-bold text-slate-800 mb-3 tracking-tight">Clean Code & Software Architecture</h1>
+        <p class="text-lg text-slate-600">
+            Based on ArjanCodes' concepts: Test your understanding of writing maintainable Python code and designing decoupled software architectures.
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-6" id="quizForm">
+
+        <!-- Topic 1: Clean Code -->
+        <div class="border-b-2 border-slate-200 pb-2 mb-6 mt-10">
+            <h2 class="text-2xl font-bold text-slate-800">Part 1: 5 Tips for Writing Clean Python Code</h2>
+        </div>
+
+        <!-- Question 1 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                <h2 class="text-xl font-semibold">Reducing Nesting (Arrow Code)</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                What is the most effective technique to flatten heavily indented `if/else` logic ("Arrow Code") at the beginning of a function?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Moving all the nested `if` statements into a separate class.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Using Guard Clauses (early returns or early raises) to handle edge cases immediately and exit the function.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Replacing all `if` statements with `try...except` blocks.</span>
+                </label>
+            </div>
+            <!-- Note: Background is neutral (slate-50), only the left border is green (border-emerald-500) -->
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Guard clauses check for invalid conditions right at the start of a function and `return` or `raise` immediately. This allows the "happy path" (the main logic) to remain unindented, making the code much easier to read.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 2 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
+                <h2 class="text-xl font-semibold">Avoiding Magic Numbers</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Why is it a bad practice to use "magic numbers" (e.g., `if user_age > 21:`) directly inside your business logic?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">They lack context and meaning, making the code hard to read and difficult to update if the number needs to change in multiple places.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Python evaluates hardcoded numbers slower than variables, degrading performance.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Magic numbers interfere with Python's Garbage Collector.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> A magic number explains *what* the value is, but not *why* it's there. Replacing it with a named constant (e.g., `LEGAL_DRINKING_AGE = 21`) makes the code self-documenting and provides a single source of truth if the value ever changes.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 3 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
+                <h2 class="text-xl font-semibold">Function Responsibilities</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                According to clean code principles, what is the ideal scope of responsibilities for a single function?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It should encapsulate an entire feature end-to-end to minimize the number of functions in a file.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It should handle both data fetching and data rendering to keep related operations together.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">It should do exactly one thing, and do it well (Single Responsibility Principle).</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: C.</strong> Functions should be small and focused on a single task. If a function is validating input, querying a database, and formatting an email all at once, it becomes impossible to test those parts individually or reuse them.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 4 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">4</div>
+                <h2 class="text-xl font-semibold">Type Hinting</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Why are Type Hints highly recommended in modern Python development?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">They improve developer experience (IDE autocompletion) and allow static analysis tools (like mypy) to catch bugs before the code runs.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">They force the Python interpreter to compile the code into faster C code.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">They automatically convert (coerce) wrong data types at runtime without any external libraries.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> Native Python type hints do not affect runtime performance or perform automatic coercion (unless paired with Pydantic). Their main purpose is readability, superior IDE support, and static bug detection.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 5 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">5</div>
+                <h2 class="text-xl font-semibold">Replacing Long IF/ELIF Chains</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                If you have a very long chain of `if/elif` statements checking a single variable to execute different functions, what is a cleaner, more Pythonic approach?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="a" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Using nested `try...except` statements for every condition.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="b" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Mapping the conditions to functions using a Dictionary, or using Python 3.10+ Pattern Matching (`match/case`).</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="c" class="mt-1 w-4 h-4 text-indigo-600">
+                    <span class="text-slate-700">Moving the `if/elif` chain into a separate thread.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> A dictionary mapping keys to callable functions (Strategy Pattern) removes visual clutter and makes it incredibly easy to add new conditions dynamically without touching the core logic.
+                </p>
+            </div>
+        </section>
+
+        <!-- Topic 2: Software Architecture -->
+        <div class="border-b-2 border-slate-200 pb-2 mb-6 mt-12">
+            <h2 class="text-2xl font-bold text-slate-800">Part 2: Why You Should Think About Software Architecture</h2>
+        </div>
+
+        <!-- Question 6 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">6</div>
+                <h2 class="text-xl font-semibold">The Purpose of Architecture</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                What is the primary reason to implement Software Architecture patterns in a Python project?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="a" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">To make the application run faster and consume less memory.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="b" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">To manage complexity, separate concerns, and make the codebase easier to maintain, test, and scale over time.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="c" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">To bypass the limitations of Python's Global Interpreter Lock (GIL).</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Architecture is rarely about raw performance. It is about human maintainability: ensuring that a change in the database layer doesn't require rewriting the entire core business logic.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 7 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">7</div>
+                <h2 class="text-xl font-semibold">Coupling</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                In architectural terms, what does it mean when two components or modules are "Tightly Coupled"?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q7" value="a" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">They share the same memory space to improve execution speed.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q7" value="b" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">They heavily rely on each other's internal implementations. A change in one forces a change in the other.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q7" value="c" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">They are written in the same Python file.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Tight coupling is the enemy of good architecture. If your payment processing class has hardcoded SQL queries inside it, it is tightly coupled to the database. If you change the database, the payment processor breaks.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 8 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">8</div>
+                <h2 class="text-xl font-semibold">Dependency Injection (DI)</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                How does Dependency Injection solve the problem of tight coupling?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q8" value="a" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">By automatically downloading required external libraries via `pip` at runtime.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q8" value="b" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">By passing dependencies (like an email sender or DB connection) into a class via its `__init__` method, rather than having the class instantiate them directly.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q8" value="c" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">By injecting SQL commands directly into the core domain layer.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Instead of a class explicitly calling `db = PostgresDatabase()`, it should accept `db` as a parameter. This allows you to easily pass a `MockDatabase()` when running unit tests.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 9 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">9</div>
+                <h2 class="text-xl font-semibold">The Domain Layer</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                In a layered architecture (like Clean Architecture), what should the central "Domain Layer" (Business Logic) know about the Database or external APIs?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q9" value="a" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">It should know everything, acting as the main controller for writing SQL queries.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q9" value="b" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">It should only know about SQLAlchemy ORM models, but not raw SQL.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q9" value="c" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">Absolutely nothing. It should be entirely independent and pure, relying only on abstract interfaces to interact with the outside world.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: C.</strong> The most crucial rule of Clean Architecture is the Dependency Rule: dependencies must point inward. The core business logic should not import or know about specific database engines, frameworks (like FastAPI/Django), or external tools.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 10 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">10</div>
+                <h2 class="text-xl font-semibold">Depending on Abstractions</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                To truly decouple your code, Arjan emphasizes relying on "abstractions rather than concretions." How is this typically implemented in modern Python?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q10" value="a" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">By using Abstract Base Classes (`abc.ABC`) or Protocols (`typing.Protocol`) to define expected behaviors without implementing them.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q10" value="b" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">By hiding all variables behind double underscores (e.g., `__my_var`) to encapsulate them.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q10" value="c" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700">By turning every class into a DataClass so no methods can be executed.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-r-lg border-l-4 border-emerald-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> Dependency Inversion means your logic should depend on an interface (like an `EmailSender` Protocol), not a concrete class (like `MailchimpSender`). This allows you to swap out implementations effortlessly.
+                </p>
+            </div>
+        </section>
+
+
+        <div class="text-center pt-8 pb-16">
+            <button id="submitBtn" onclick="submitQuiz()" class="bg-slate-800 hover:bg-slate-700 text-white text-lg font-semibold py-4 px-10 rounded-xl transition-all shadow-md hover:shadow-lg w-full md:w-auto">
+                Submit Quiz & View Results
+            </button>
+            <div id="resultBanner" class="hidden mt-8 text-2xl md:text-3xl font-bold p-6 rounded-xl border-2 bg-white shadow-sm">
+                <!-- Score injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function submitQuiz() {
+            // Correct answer mappings
+            const answers = {
+                q1: 'b',
+                q2: 'a',
+                q3: 'c',
+                q4: 'a',
+                q5: 'b',
+                q6: 'b',
+                q7: 'b',
+                q8: 'b',
+                q9: 'c',
+                q10: 'a'
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+
+            for (const [q, correctAns] of Object.entries(answers)) {
+                const options = document.getElementsByName(q);
+                
+                options.forEach(opt => {
+                    const label = opt.closest('label');
+                    
+                    // Reset custom styling classes in case of re-runs
+                    label.classList.remove('bg-emerald-50', 'border-emerald-500', 'bg-red-50', 'border-red-500', 'ring-1', 'ring-emerald-500', 'ring-red-500');
+                    
+                    if (opt.checked) {
+                        // User selected this option
+                        if (opt.value === correctAns) {
+                            score++;
+                            label.classList.add('bg-emerald-50', 'border-emerald-500', 'ring-1', 'ring-emerald-500');
+                        } else {
+                            label.classList.add('bg-red-50', 'border-red-500', 'ring-1', 'ring-red-500');
+                        }
+                    }
+                    
+                    // Always highlight the correct answer so they can learn
+                    if (opt.value === correctAns && !opt.checked) {
+                         label.classList.add('border-emerald-400', 'bg-emerald-50');
+                    }
+                    
+                    // Lock inputs after submission
+                    opt.disabled = true;
+                    label.classList.remove('cursor-pointer', 'hover:bg-slate-50');
+                    label.classList.add('cursor-default');
+                });
+
+                // Show the explanation block for this question
+                const explanation = document.querySelector(`input[name="${q}"]`).closest('.q-card').querySelector('.explanation');
+                explanation.classList.remove('hidden');
+            }
+
+            // Display Score Banner
+            const banner = document.getElementById('resultBanner');
+            banner.innerHTML = `You scored <span class="${score === total ? 'text-emerald-600' : 'text-slate-800'}">${score}</span> out of ${total}!`;
+            banner.classList.remove('hidden');
+            
+            if (score === total) {
+                 banner.classList.add('border-emerald-500', 'text-slate-800');
+            } else {
+                 banner.classList.add('border-slate-800', 'text-slate-800');
+            }
+            
+            // Hide submit button and smoothly scroll down
+            document.getElementById('submitBtn').style.display = 'none';
+            setTimeout(() => banner.scrollIntoView({ behavior: 'smooth', block: 'end' }), 100);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1: Asyncio & Event Loop Self-Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+            color: #0f172a; /* Slate 900 */
+        }
+        
+        .question-card {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .answer-reveal {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+            opacity: 0;
+        }
+
+        .answer-reveal.show {
+            max-height: 800px; /* Arbitrary large max-height for animation */
+            opacity: 1;
+        }
+        
+        /* Custom syntax highlighting simulation for code blocks */
+        .code-block {
+            background-color: #1e293b; /* Slate 800 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: monospace;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+        .code-keyword { color: #c678dd; } /* Purple */
+        .code-function { color: #61afef; } /* Blue */
+        .code-comment { color: #64748b; } /* Slate 500 */
+    </style>
+</head>
+<body class="antialiased min-h-screen p-4 md:p-8 lg:p-12">
+
+    <header class="max-w-4xl mx-auto mb-10 text-center">
+        <h1 class="text-4xl font-bold text-slate-800 mb-3 tracking-tight">Day 1: Asyncio Theoretical Assessment</h1>
+        <p class="text-lg text-slate-600">
+            Test your understanding of the Event Loop internals, concurrency primitives, and production pitfalls.
+            Select the best answers below and click <strong>Submit Quiz</strong> to evaluate your knowledge.
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-6" id="quizForm">
+
+        <!-- Question 1 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-blue-100 text-blue-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">1</div>
+                <h2 class="text-xl font-semibold">The Event Loop & Context Switching</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Why is the Python asyncio Event Loop generally faster for I/O-bound operations compared to OS-level multithreading?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="a" class="mt-1 w-4 h-4 text-blue-600">
+                    <span class="text-slate-700">It utilizes multiple CPU cores efficiently to process requests in parallel.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="b" class="mt-1 w-4 h-4 text-blue-600">
+                    <span class="text-slate-700">It uses cooperative multitasking and user-space context switching, avoiding expensive OS kernel overhead.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q1" value="c" class="mt-1 w-4 h-4 text-blue-600">
+                    <span class="text-slate-700">It automatically ignores database locks, increasing network throughput.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-green-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> Context switching at the OS level (threads) is expensive because it requires the kernel to save/load CPU registers and memory maps. Asyncio runs on a single thread and uses software-level (user-space) context switching instantly when <code class="bg-slate-200 px-1 rounded text-pink-600">await</code> is called.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 2 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">2</div>
+                <h2 class="text-xl font-semibold">Async Primitives: Coroutines</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                What happens if you define <code class="bg-slate-200 px-1 rounded text-pink-600 text-base">async def fetch_data(): ...</code> and simply call <code class="bg-slate-200 px-1 rounded text-blue-600 text-base">data = fetch_data()</code> without using <code class="bg-slate-200 px-1 rounded text-pink-600 text-base">await</code> or creating a Task?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="a" class="mt-1 w-4 h-4 text-purple-600">
+                    <span class="text-slate-700">The function executes synchronously in the background.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="b" class="mt-1 w-4 h-4 text-purple-600">
+                    <span class="text-slate-700">It throws an immediate `RuntimeError`.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q2" value="c" class="mt-1 w-4 h-4 text-purple-600">
+                    <span class="text-slate-700">It returns a Coroutine object, but the code inside the function never actually executes.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-green-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: C.</strong> Coroutines in Python are passive. Merely calling an <code class="bg-slate-200 px-1 rounded text-pink-600">async def</code> function only instantiates the coroutine object. It must be awaited or scheduled on the Event Loop to actually run.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 3 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">3</div>
+                <h2 class="text-xl font-semibold">Async Primitives: Tasks</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                What is the primary practical purpose of an <code class="bg-slate-200 px-1 rounded text-blue-600 text-base">asyncio.Task</code>?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="a" class="mt-1 w-4 h-4 text-purple-600">
+                    <span class="text-slate-700">It acts as a wrapper that actively schedules a Coroutine to run concurrently on the Event Loop as soon as possible.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="b" class="mt-1 w-4 h-4 text-purple-600">
+                    <span class="text-slate-700">It allocates a new background OS thread for heavy mathematical computations.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q3" value="c" class="mt-1 w-4 h-4 text-purple-600">
+                    <span class="text-slate-700">It is a low-level OS object representing an unresolved network socket.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-green-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> Wrapping a coroutine in a Task using <code class="bg-slate-200 px-1 rounded text-blue-600">asyncio.create_task()</code> registers it with the Event Loop, allowing it to run concurrently in the background while your main code continues executing.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 4 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">4</div>
+                <h2 class="text-xl font-semibold">Blocking the Event Loop</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                If you accidentally place a synchronous, CPU-bound operation (like a heavy `for` loop) or <code class="bg-slate-200 px-1 rounded text-pink-600 text-base">time.sleep(5)</code> inside an async endpoint, what is the consequence?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="a" class="mt-1 w-4 h-4 text-red-600">
+                    <span class="text-slate-700">Python automatically spawns a background thread to handle it so the server stays responsive.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="b" class="mt-1 w-4 h-4 text-red-600">
+                    <span class="text-slate-700">Only that specific coroutine is paused, allowing other async API endpoints to process normally.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q4" value="c" class="mt-1 w-4 h-4 text-red-600">
+                    <span class="text-slate-700">The single thread running the Event Loop is completely blocked, and no other coroutines can make progress for 5 seconds.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-green-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: C.</strong> Because the Event Loop runs on a single thread, any synchronous blocking code halts the entire process. This is why you must use <code class="bg-slate-200 px-1 rounded text-blue-600">asyncio.sleep()</code> for I/O waits, or <code class="bg-slate-200 px-1 rounded text-blue-600">asyncio.to_thread()</code> for heavy CPU tasks.
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 5 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-red-100 text-red-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">5</div>
+                <h2 class="text-xl font-semibold">Production Pitfalls: Silent Failures</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                Analyze this code snippet. Why does this completely fail to catch the exception raised by the background worker?
+            </p>
+            <div class="code-block text-sm mb-4">
+<span class="code-keyword">try</span>:
+    asyncio.create_task(background_worker_that_crashes())
+<span class="code-keyword">except</span> Exception:
+    print("Caught error!")
+            </div>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="a" class="mt-1 w-4 h-4 text-red-600">
+                    <span class="text-slate-700">`create_task` returns instantly. The execution leaves the `try` block long before the Event Loop actually runs the task and it crashes.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="b" class="mt-1 w-4 h-4 text-red-600">
+                    <span class="text-slate-700">Tasks created with `create_task` swallow exceptions by design and never propagate them.</span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q5" value="c" class="mt-1 w-4 h-4 text-red-600">
+                    <span class="text-slate-700">`try...except` only works on synchronous code, not in asynchronous functions.</span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-green-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: A.</strong> The execution immediately steps out of the `try` block. When the background task crashes later, the exception is stored inside the Task object as an unhandled exception, causing a "Silent Failure".
+                </p>
+            </div>
+        </section>
+
+        <!-- Question 6 -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 q-card">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold">6</div>
+                <h2 class="text-xl font-semibold">Modern Structured Concurrency</h2>
+            </div>
+            <p class="text-slate-700 text-lg mb-4 font-medium">
+                In Python 3.11+, what is the recommended, modern approach to spawn multiple background tasks, ensure they all complete, and guarantee that if one fails, the others are properly cancelled and the errors are grouped?
+            </p>
+            <div class="space-y-3">
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="a" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700"><code>asyncio.gather(..., return_exceptions=True)</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="b" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700"><code>async with asyncio.TaskGroup() as tg:</code></span>
+                </label>
+                <label class="flex items-start gap-3 p-4 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                    <input type="radio" name="q6" value="c" class="mt-1 w-4 h-4 text-emerald-600">
+                    <span class="text-slate-700"><code>asyncio.Semaphore(10)</code></span>
+                </label>
+            </div>
+            <div class="explanation hidden mt-6 bg-slate-50 rounded-lg border-l-4 border-green-500 p-5">
+                <h4 class="font-semibold text-slate-800 mb-2">Explanation:</h4>
+                <p class="text-slate-700 text-sm">
+                    <strong>Correct Answer: B.</strong> <code>TaskGroup</code> introduces Structured Concurrency. It serves as an asynchronous context manager that waits for all child tasks to finish, and if any raise an exception, it safely cancels the siblings and groups the errors into an <code>ExceptionGroup</code>.
+                </p>
+            </div>
+        </section>
+
+        <div class="text-center pt-8 pb-16">
+            <button id="submitBtn" onclick="submitQuiz()" class="bg-slate-800 hover:bg-slate-700 text-white text-lg font-semibold py-4 px-10 rounded-xl transition-all shadow-md hover:shadow-lg w-full md:w-auto">
+                Submit Quiz & View Results
+            </button>
+            <div id="resultBanner" class="hidden mt-8 text-2xl md:text-3xl font-bold p-6 rounded-xl border-2 bg-white shadow-sm">
+                <!-- Score injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function submitQuiz() {
+            // Correct answer mappings
+            const answers = {
+                q1: 'b',
+                q2: 'c',
+                q3: 'a',
+                q4: 'c',
+                q5: 'a',
+                q6: 'b'
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+
+            for (const [q, correctAns] of Object.entries(answers)) {
+                const options = document.getElementsByName(q);
+                
+                options.forEach(opt => {
+                    const label = opt.closest('label');
+                    
+                    // Reset custom styling classes in case of re-runs
+                    label.classList.remove('bg-emerald-50', 'border-emerald-500', 'bg-red-50', 'border-red-500', 'ring-1', 'ring-emerald-500', 'ring-red-500');
+                    
+                    if (opt.checked) {
+                        // User selected this option
+                        if (opt.value === correctAns) {
+                            score++;
+                            label.classList.add('bg-emerald-50', 'border-emerald-500', 'ring-1', 'ring-emerald-500');
+                        } else {
+                            label.classList.add('bg-red-50', 'border-red-500', 'ring-1', 'ring-red-500');
+                        }
+                    }
+                    
+                    // Always highlight the correct answer so they can learn
+                    if (opt.value === correctAns && !opt.checked) {
+                         label.classList.add('border-emerald-400', 'bg-emerald-50');
+                    }
+                    
+                    // Lock inputs after submission
+                    opt.disabled = true;
+                    label.classList.remove('cursor-pointer', 'hover:bg-slate-50');
+                    label.classList.add('cursor-default');
+                });
+
+                // Show the explanation block for this question
+                const explanation = document.querySelector(`input[name="${q}"]`).closest('.q-card').querySelector('.explanation');
+                explanation.classList.remove('hidden');
+            }
+
+            // Display Score Banner
+            const banner = document.getElementById('resultBanner');
+            banner.innerHTML = `You scored <span class="${score === total ? 'text-emerald-600' : 'text-blue-600'}">${score}</span> out of ${total}!`;
+            banner.classList.remove('hidden');
+            
+            if (score === total) {
+                 banner.classList.add('border-emerald-500', 'text-slate-800');
+            } else {
+                 banner.classList.add('border-blue-500', 'text-slate-800');
+            }
+            
+            // Hide submit button and smoothly scroll down
+            document.getElementById('submitBtn').style.display = 'none';
+            setTimeout(() => banner.scrollIntoView({ behavior: 'smooth', block: 'end' }), 100);
+        }
+    </script>
+</body>
+</html>

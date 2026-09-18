@@ -1,0 +1,2 @@
+Task description: ASSIGNMENT.md
+Solution: https://github.com/Avrhambi/async-report-engine
