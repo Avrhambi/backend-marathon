@@ -31,7 +31,7 @@ You are tasked with building a full-stack **Async Report Engine**. The system wi
 ### Architecture Reference
 This final project is built as a separate, fully standalone application repository to simulate a real-world microservice architecture.
 
-**Reference:** Please navigate to the [`exrecise/async-report-engine/`](./exrecise/async-report-engine/) folder for the full codebase, detailed documentation (`docs/ASSIGNMENT.md`, `docs/INTENT.md`), and the starter template.
+**Reference:** The full codebase and detailed documentation for this assignment can be found in its dedicated public repository: [Avrhambi/async-report-engine](https://github.com/Avrhambi/async-report-engine).
 
 ---
-*Run this project interactively by following the `README.md` inside the `async-report-engine` folder. You will typically need to run `docker-compose up` to spin up the API, the Worker, PostgreSQL, and RabbitMQ simultaneously.*
+*Run this project interactively by following the `README.md` on the repository linked above. You will typically need to run `docker-compose up` to spin up the API, the Worker, PostgreSQL, and RabbitMQ simultaneously.*
